@@ -5,6 +5,7 @@ import javax.smartcardio.CardChannel
 import javax.smartcardio.CommandAPDU
 import javax.smartcardio.ResponseAPDU
 import javax.xml.bind.DatatypeConverter.parseHexBinary
+import javax.xml.bind.DatatypeConverter.printHexBinary
 
 const val MAX_BYTE: Int = 255
 
@@ -25,6 +26,53 @@ const val MAX_BYTE: Int = 255
 //    transmit { SELECT { DFplmnsel } } expecting { sw { 0x9F0F } }
 //}
 
+/** Data to save and transfer partially initialized CommandAPDU */
+data class PartialCommandAPDU(val cla: Int, val ins: Int?,
+                              val p1: Int, val p2: Int,
+                              val nr: Int?, val data: ByteArray?) {
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as PartialCommandAPDU
+
+        if (cla != other.cla) return false
+        if (ins != other.ins) return false
+        if (p1 != other.p1) return false
+        if (p2 != other.p2) return false
+        if (nr != other.nr) return false
+        if (data != null) {
+            if (other.data == null) return false
+            if (!data.contentEquals(other.data)) return false
+        } else if (other.data != null) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var result = cla
+        result = 31 * result + (ins ?: 0)
+        result = 31 * result + p1
+        result = 31 * result + p2
+        result = 31 * result + (nr ?: 0)
+        result = 31 * result + (data?.contentHashCode() ?: 0)
+        return result
+    }
+
+    override fun toString(): String {
+        val noValue = "??"
+        val template = "%02X"
+        val ch = template.format(cla)
+        val ih = ins?.let { template.format(ins) } ?: noValue
+        val p1h = template.format(p1)
+        val p2h = template.format(p2)
+        val nrh = nr?.let { template.format(nr) } ?: noValue
+        val dh = data?.toHexString() ?: noValue
+
+        return "${this.javaClass.simpleName}(cla=$ch,ins=$ih,p1=$p1h,p2=$p2h,nr=$nrh,data=$dh)"
+    }
+}
+
 /**
  * Builder of [CommandAPDU] object.
  * Supports these ways to construct [CommandAPDU] (tries to create object in this order) :
@@ -34,7 +82,7 @@ const val MAX_BYTE: Int = 255
  *   CommandAPDU(int cla, int ins, int p1, int p2, int ne)
  *   CommandAPDU(int cla, int ins, int p1, int p2)
  */
-class CommandAPDUBuilder {
+class CommandAPDUBuilder() {
     var commandClass: Int = 0
     var instruction: Int? = null
     var p1value: Int = 0
@@ -42,6 +90,17 @@ class CommandAPDUBuilder {
     var expectedResponseLength: Int? = null
     var dataBytes: ByteArray? = null
     var fullAPDU: ByteArray? = null
+
+    constructor(partial: PartialCommandAPDU): this() {
+        with(partial) {
+            commandClass = cla
+            instruction = ins
+            p1value = p1
+            p2value = p2
+            expectedResponseLength = nr
+            dataBytes = data
+        }
+    }
 
     inline fun cla(init: CommandAPDUBuilder.() -> Int) {
         commandClass = this.init()
@@ -142,6 +201,12 @@ class CommandAPDUBuilder {
         }
     }
 
+    /** Allows to save builder's data to be used later to continue APDU creation */
+    fun buildPartial(): PartialCommandAPDU = PartialCommandAPDU(
+        commandClass, instruction,
+        p1value, p2value,
+        expectedResponseLength, dataBytes)
+
     companion object {
         fun throwInvalidStringForHex(hex: String): Nothing {
             throw IllegalArgumentException("Invalid hex string passed [$hex]")
@@ -164,12 +229,17 @@ class CommandAPDUBuilder {
  *      dataHex { "3F00" }
  *  }
  */
-fun apdu(init: CommandAPDUBuilder.() -> Unit): CommandAPDU {
-    val builder = CommandAPDUBuilder()
-    builder.init()
+fun apdu(init: CommandAPDUBuilder.() -> Unit): CommandAPDU  = CommandAPDUBuilder().apply(init).build()
 
-    return builder.build()
-}
+fun apdu(savedAPDU: PartialCommandAPDU, continueInit: CommandAPDUBuilder.() -> Unit): CommandAPDU =
+    CommandAPDUBuilder(savedAPDU)
+        .apply(continueInit)
+        .build()
+
+fun partialAPDU(initPartial: CommandAPDUBuilder.() -> Unit): PartialCommandAPDU  =
+    CommandAPDUBuilder()
+        .apply(initPartial)
+        .buildPartial()
 
 fun String.hexToBytesOrNull(): ByteArray? = try {
     parseHexBinary(this)
@@ -177,3 +247,4 @@ fun String.hexToBytesOrNull(): ByteArray? = try {
     null
 }
 
+fun ByteArray.toHexString(): String = printHexBinary(this)
