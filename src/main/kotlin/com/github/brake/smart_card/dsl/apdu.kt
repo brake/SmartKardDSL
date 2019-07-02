@@ -1,11 +1,22 @@
+/**
+ *    Copyright 2019 Constantin Roganov
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.github.brake.smart_card.dsl
 
-import javax.smartcardio.Card
-import javax.smartcardio.CardChannel
 import javax.smartcardio.CommandAPDU
-import javax.smartcardio.ResponseAPDU
-import javax.xml.bind.DatatypeConverter.parseHexBinary
-import javax.xml.bind.DatatypeConverter.printHexBinary
 
 const val MAX_BYTE: Int = 255
 
@@ -82,7 +93,7 @@ data class PartialCommandAPDU(val cla: Int, val ins: Int?,
  *   CommandAPDU(int cla, int ins, int p1, int p2, int ne)
  *   CommandAPDU(int cla, int ins, int p1, int p2)
  */
-class CommandAPDUBuilder() {
+open class CommandAPDUBuilder() {
     var commandClass: Int = 0
     var instruction: Int? = null
     var p1value: Int = 0
@@ -150,6 +161,8 @@ class CommandAPDUBuilder() {
         expectedResponseLength = init()
         checkIntRepresentsByte(expectedResponseLength!!, "Expected Response Length")
     }
+
+    inline fun nr(init: CommandAPDUBuilder.() -> Int) = responseLength(init)
 
     /** @throws NumberFormatException */
     inline fun responseLengthHex(initFromHexString: CommandAPDUBuilder.() -> String) {
@@ -229,22 +242,15 @@ class CommandAPDUBuilder() {
  *      dataHex { "3F00" }
  *  }
  */
-fun apdu(init: CommandAPDUBuilder.() -> Unit): CommandAPDU  = CommandAPDUBuilder().apply(init).build()
+inline fun apdu(init: CommandAPDUBuilder.() -> Unit): CommandAPDU  = CommandAPDUBuilder().apply(init).build()
 
-fun apdu(savedAPDU: PartialCommandAPDU, continueInit: CommandAPDUBuilder.() -> Unit): CommandAPDU =
+inline fun apdu(savedAPDU: PartialCommandAPDU, continueInit: CommandAPDUBuilder.() -> Unit): CommandAPDU =
     CommandAPDUBuilder(savedAPDU)
         .apply(continueInit)
         .build()
 
-fun partialAPDU(initPartial: CommandAPDUBuilder.() -> Unit): PartialCommandAPDU  =
+inline fun partialAPDU(initPartial: CommandAPDUBuilder.() -> Unit): PartialCommandAPDU  =
     CommandAPDUBuilder()
         .apply(initPartial)
         .buildPartial()
 
-fun String.hexToBytesOrNull(): ByteArray? = try {
-    parseHexBinary(this)
-} catch (_: Exception) {
-    null
-}
-
-fun ByteArray.toHexString(): String = printHexBinary(this)
