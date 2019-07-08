@@ -1,6 +1,21 @@
+/*
+ *        Copyright 2019 Constantin Roganov
+ *
+ *    Licensed under the Apache License, Version 2.0 (the "License");
+ *    you may not use this file except in compliance with the License.
+ *    You may obtain a copy of the License at
+ *
+ *        http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *    Unless required by applicable law or agreed to in writing, software
+ *    distributed under the License is distributed on an "AS IS" BASIS,
+ *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *    See the License for the specific language governing permissions and
+ *    limitations under the License.
+ */
+
 package com.github.brake.smart_card.dsl
 
-import io.kotlintest.TestContext
 import io.kotlintest.matchers.string.contain
 import io.kotlintest.should
 import io.kotlintest.shouldBe
@@ -66,12 +81,12 @@ class TestCorrectCreation: FunSpec({
     test("Create partial APDU a then complete and finalize") {
         val (c, i, p1v, p2v) = apduInts
 
-        val PARTIAL_APDU = partialAPDU {
+        val partialCommandAPDU = partialAPDU {
             ins { i }
             p1 { p1v }
             p2 { p2v }
         }
-        apdu(PARTIAL_APDU) {
+        apdu(partialCommandAPDU) {
             cla { c }
             data { apduBytes.sliceArray(5 until apduInts.size) }
         } shouldBe apduValue
@@ -80,15 +95,15 @@ class TestCorrectCreation: FunSpec({
 
 const val LESSER_MESSAGE = "should be lesser than"
 
-fun TestContext.testWithBigValue(init: CommandAPDUBuilder.() -> Unit) {
+fun testWithBigValue(init: CommandAPDUBuilder.() -> Unit) {
     shouldThrow<IllegalArgumentException> { apdu(init) }.message should contain(LESSER_MESSAGE)
 }
 
-fun TestContext.testWithInvalidHexValue(init: CommandAPDUBuilder.() -> Unit) {
+fun testWithInvalidHexValue(init: CommandAPDUBuilder.() -> Unit) {
     shouldThrow<NumberFormatException> { apdu(init) }
 }
 
-fun TestContext.testWithInvalidBytes(init: CommandAPDUBuilder.() -> Unit) {
+fun testWithInvalidBytes(init: CommandAPDUBuilder.() -> Unit) {
     shouldThrow<IllegalArgumentException> { apdu(init) }.message should contain("Invalid hex string passed")
 }
 
