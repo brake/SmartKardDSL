@@ -25,7 +25,7 @@ import javax.smartcardio.CardChannel
 class TestCard(private val protocol: Protocol, private val sw1: Int, private val sw2: Int): Card() {
 
     companion object {
-        val atr = ATR("1234567890ABCDEF".hexToBytesOrNull())
+        val atr = ATR("3B0A210026074F53459808F8".hexToBytesOrNull())
     }
     override fun beginExclusive() {}
 
