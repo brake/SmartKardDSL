@@ -18,19 +18,19 @@ package com.github.brake.smart_card.dsl
 
 import javax.smartcardio.ResponseAPDU
 
-val ResponseAPDU.sw1
+val ResponseAPDU.sw1: Int
     get() = sW1
 
-val ResponseAPDU.SW1
+val ResponseAPDU.SW1: Int
     get() = sW1
 
-val ResponseAPDU.sw2
+val ResponseAPDU.sw2: Int
     get() = sW2
 
-val ResponseAPDU.SW2
+val ResponseAPDU.SW2: Int
     get() = sW2
 
-val ResponseAPDU.SW
+val ResponseAPDU.SW: Int
     get() = sw
 
 fun ResponseAPDU.withResult(block: ResponseAPDU.() -> Unit) {
