@@ -19,10 +19,10 @@ package com.github.brake.smart_card.dsl
 import com.github.brake.smart_card.TestCard
 import io.kotlintest.shouldBe
 import io.kotlintest.shouldThrow
-import io.kotlintest.specs.FunSpec
+import io.kotlintest.specs.StringSpec
 import javax.smartcardio.CommandAPDU
 
-class TestResponse : FunSpec({
+class TestResponse : StringSpec({
     val statusWord = arrayOf(0xF1, 0xF2)
     val testCardChannel = TestCard(Protocol.T1, statusWord[0], statusWord[1]).basicChannel
     val apdu = "001122330C445566778899AABBCCDDEEFF".hexToBytesOrThrow()
@@ -30,13 +30,13 @@ class TestResponse : FunSpec({
         CommandAPDU(apdu)
     }
 
-    test("withResult extension") {
+    "withResult extension" {
         result.withResult {
             SW shouldBe 0xF1F2
         }
     }
 
-    test("assert extension with success") {
+    "assert extension with success" {
         result.assert("Shouldn't be visible") {
             sw1 in listOf(0xF0, 0xF1, 0xF3)
 
@@ -45,7 +45,7 @@ class TestResponse : FunSpec({
         }
     }
 
-    test("assert extension with failure") {
+    "assert extension with failure" {
         val message = "Invalid SW!"
 
         shouldThrow<AssertionError> {
@@ -53,6 +53,5 @@ class TestResponse : FunSpec({
                 SW in listOf(0x9000, 0x6100, 0x9804)
             }
         }.message shouldBe message
-
     }
 })

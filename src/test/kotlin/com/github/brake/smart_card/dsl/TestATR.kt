@@ -16,13 +16,12 @@
 
 package com.github.brake.smart_card.dsl
 
-import com.github.brake.smart_card.TestCard
 import io.kotlintest.matchers.string.shouldContain
 import io.kotlintest.shouldBe
-import io.kotlintest.specs.FunSpec
+import io.kotlintest.specs.StringSpec
 import javax.smartcardio.ATR
 
-class TestATR : FunSpec({
+class TestATR : StringSpec({
     val atrString = "3B0A210026074F53459808F8"
     val historicalBytesPos = 6
 
@@ -34,11 +33,11 @@ class TestATR : FunSpec({
             .toByteArray()
     )
 
-    test("ATR.hex") {
+    "ATR.hex" {
         testATR.hex shouldBe atrString
     }
 
-    test("ATR.historicalBytesHex") {
+    "ATR.historicalBytesHex" {
         testATR.historicalBytesHex shouldContain atrString.substring(historicalBytesPos)
     }
 })

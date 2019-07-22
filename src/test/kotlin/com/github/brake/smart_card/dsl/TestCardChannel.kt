@@ -19,14 +19,14 @@ package com.github.brake.smart_card.dsl
 import com.github.brake.smart_card.TestCard
 import io.kotlintest.matchers.collections.shouldEndWith
 import io.kotlintest.matchers.collections.shouldStartWith
-import io.kotlintest.specs.FunSpec
+import io.kotlintest.specs.StringSpec
 import javax.smartcardio.CommandAPDU
 
-class TestCardChannel : FunSpec({
+class TestCardChannel : StringSpec({
     val sw = arrayOf(0xF1, 0xF2)
     val testCardChannel = TestCard(Protocol.T1, sw[0], sw[1]).basicChannel
 
-    test("CardChannel.transmit extension with block") {
+    "CardChannel.transmit extension with block" {
         val apdu = "001122330C445566778899AABBCCDDEEFF".hexToBytesOrThrow()
 
         testCardChannel.transmit {

@@ -20,20 +20,20 @@ import com.github.brake.smart_card.TestCard
 import io.kotlintest.matchers.collections.shouldEndWith
 import io.kotlintest.matchers.collections.shouldStartWith
 import io.kotlintest.shouldBe
-import io.kotlintest.specs.FunSpec
+import io.kotlintest.specs.StringSpec
 import javax.smartcardio.CommandAPDU
 
 
-//fun test(card: Card) {
+//fun card: Card) {
 //    card {
 //        transmit {
 //            apdu {
 //                ins { 0xA4 }
 //                dataHex { "3F00" }
 //            }
-//        }.assert("Invalid SW") {
+//        }.assert("Invalid SW" {
 //            sw == 0x9000
-//        }.assert("Invalid data") {
+//        }.assert("Invalid data" {
 //            0xFF.toByte() in data
 //        }
 //
@@ -46,10 +46,10 @@ import javax.smartcardio.CommandAPDU
 //    }
 //}
 
-class TestCardBuilder : FunSpec({
+class TestCardBuilder : StringSpec({
     val testCard = TestCard(Protocol.T0, 0xF1, 0xF2)
 
-    test("Card.invoke()") {
+    "Card.invoke()" {
         testCard {
             val apdu = "001122330C445566778899AABBCCDDEEFF".hexToBytesOrThrow()
             transmit(CommandAPDU(apdu)).apply {
@@ -62,11 +62,11 @@ class TestCardBuilder : FunSpec({
         }
     }
 
-    test("Card.ATR") {
+    "Card.ATR" {
         (testCard.ATR contentEquals TestCard.atr.bytes) shouldBe true
     }
 
-    test("Card.atrHex") {
+    "Card.atrHex" {
         testCard.atrHex shouldBe TestCard.atr.bytes.toHexString()
     }
 })
