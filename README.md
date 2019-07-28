@@ -1,10 +1,42 @@
 # Smart Card interacting DSL for Kotlin
 
-[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://www.apache.org/licenses/LICENSE-2.0.txt)
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://www.apache.org/licenses/LICENSE-2.0.txt) [![Maven Central](https://img.shields.io/maven-central/v/com.github.brake.smart_card/smartKardDSL.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:%22com.github.brake.smart_card%22%20AND%20a:%22smartKardDSL%22)
 
 An attempt to create Kotlin DSL around `javax.smartcardio` [abstractions](https://docs.oracle.com/javase/7/docs/jre/api/security/smartcardio/spec/javax/smartcardio/package-summary.html) 
 
 This version is an early prototype of DSL.
+
+[![Changelog](https://img.shields.io/badge/CHANGELOG-Click%20Here-green.svg?longCache=true&style=for-the-badge)](CHANGELOG.md)
+
+## Table of Contents
+
+[Dependency Configuration](#dependency-configuration)
+[Examples](#examples)
+[TODO](#todo)
+
+## Dependency Configuration
+
+#### Gradle
+
+##### Groovy DSL
+```groovy
+implementation 'com.github.brake.smart_card:smartKardDSL:0.0.1'
+```
+
+##### Kotlin DSL
+```kotlin
+implementation("com.github.brake.smart_card:smartKardDSL:0.0.1")
+```
+
+#### Maven
+
+```xml
+<dependency>
+  <groupId>com.github.brake.smart_card</groupId>
+  <artifactId>smartKardDSL</artifactId>
+  <version>0.0.1</version>
+</dependency>
+```
 
 ## Examples
 
