@@ -10,9 +10,9 @@ This version is an early prototype of DSL.
 
 ## Table of Contents
 
-[Dependency Configuration](#dependency-configuration)
-[Examples](#examples)
-[TODO](#todo)
+* [Dependency Configuration](#dependency-configuration)
+* [Examples](#examples)
+* [TODO](#todo)
 
 ## Dependency Configuration
 
