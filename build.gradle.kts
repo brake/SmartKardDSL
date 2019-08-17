@@ -3,7 +3,7 @@ import org.jetbrains.dokka.gradle.DokkaTask
 
 val kotlintestVersion = "3.3.3"
 val slf4jVersion = "1.7.26"
-val artifactVersion = "0.0.1"
+val artifactVersion = "0.0.2"
 val sonatypeRepositoryUrl: String by project
 val sonatypeUsername: String by project
 val sonatypePassword: String by project
