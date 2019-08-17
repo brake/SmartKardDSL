@@ -108,4 +108,4 @@ fun test() {
 - [ ] add `assertSW` methods to `ResponseAPDU` to control contents of the error message when `SW` doesn't equal with expected value or not in a list of expected values
 - [ ] add version of `CardChannel.transmit` which able to receive a sequence of `APDU` to be transmitted one by one with optional configurable error check for each `APDU`
 - [ ] or reduce the number of curly braces on `transmit` by moving `apdu` and subclasses in context of `CardChannel` to be able to call `transmit` right on a command
-- [ ] remove `GET RESPONSE` command because it doesn't make sense - JRE detects APDU where `GET RESPONSE` is required and issues this command under the hood
+- [X] remove `GET RESPONSE` command because it doesn't make sense - JRE detects APDU where `GET RESPONSE` is required and issues this command under the hood

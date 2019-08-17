@@ -96,22 +96,3 @@ class SelectAPDUBuilder: CommandAPDUBuilder() {
 inline fun select(init: SelectAPDUBuilder.() -> Unit): CommandAPDU = SelectAPDUBuilder().apply(init).build()
 
 val SELECT = ::select
-
-/**
- * GET RESPONSE (INS=C0)
- *
- * Default - read the full available response (but 255 bytes max)
- */
-class GetResponseAUDUBuilder : CommandAPDUBuilder() {
-    init {
-        ins { Instructions.GetResponse }
-        nr { 0 }
-    }
-}
-
-fun getResponse(init: (GetResponseAUDUBuilder.() -> Unit)? = null): CommandAPDU =
-    GetResponseAUDUBuilder().apply {
-        init?.invoke(this)
-    }.build()
-
-val GET_RESPONSE = ::getResponse

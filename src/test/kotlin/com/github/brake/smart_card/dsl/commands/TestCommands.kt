@@ -108,15 +108,3 @@ class TestSelect : StringSpec({
         }
     }
 })
-
-class TestGetResponse : StringSpec({
-    "Check command default parameters" {
-        GET_RESPONSE {}.apply {
-            p1 shouldBe 0
-            p2 shouldBe 0
-            ne shouldBe 0
-            ins shouldBe Instructions.GetResponse
-            data.isEmpty() shouldBe true
-        }
-    }
-})
