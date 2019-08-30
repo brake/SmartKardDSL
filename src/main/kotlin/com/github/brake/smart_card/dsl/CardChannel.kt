@@ -14,11 +14,50 @@
  *    limitations under the License.
  */
 
+@file:Suppress("FunctionName")
+
 package com.github.brake.smart_card.dsl
 
+import com.github.brake.smart_card.dsl.commands.*
 import javax.smartcardio.CardChannel
 import javax.smartcardio.CommandAPDU
 import javax.smartcardio.ResponseAPDU
 
 /** Transmit APDU returned by [block] and return [ResponseAPDU] from the card */
 fun CardChannel.transmit(block: () -> CommandAPDU): ResponseAPDU = transmit(block())
+
+/**
+ * Creates [CommandAPDU] by calling [init], transmits it to card and returns [ResponseAPDU] with result of
+ * processing that command
+ */
+inline fun CardChannel.APDU(crossinline init: CommandAPDUBuilder.() -> Unit): ResponseAPDU  = transmit {
+    apdu(init)
+}
+
+/** Transmits the [commandAPDU] and returns result of transmission as [ResponseAPDU] */
+fun CardChannel.APDU(commandAPDU: CommandAPDU): ResponseAPDU = transmit(commandAPDU)
+
+/** Creates SELECT APDU by calling [init], transmits it to [this] channel and returns [ResponseAPDU] */
+inline fun CardChannel.SELECT(crossinline init: SelectAPDUBuilder.() -> Unit): ResponseAPDU = transmit {
+    select(init)
+}
+
+/** Creates UPDATE_BINARY APDU by calling [init], transmits it to [this] channel and returns [ResponseAPDU] */
+inline fun CardChannel.UPDATE_BINARY(crossinline init: UpdateBinaryAPDUBuilder.() -> Unit): ResponseAPDU = transmit {
+    updateBinary(init)
+}
+
+/** Creates READ_BINARY APDU by calling [init], transmits it to [this] channel and returns [ResponseAPDU] */
+inline fun CardChannel.READ_BINARY(crossinline init: ReadBinaryAPDUBuilder.() -> Unit): ResponseAPDU = transmit {
+    readBinary(init)
+}
+
+/** Creates READ_RECORD APDU by calling [init], transmits it to [this] channel and returns [ResponseAPDU] */
+inline fun CardChannel.READ_RECORD(crossinline init: ReadRecordAPDUBuilder.() -> Unit): ResponseAPDU = transmit {
+    readRecord(init)
+}
+
+/** Creates UPDATE_RECORD APDU by calling [init], transmits it to [this] channel and returns [ResponseAPDU] */
+inline fun CardChannel.UPDATE_RECORD(crossinline init: UpdateRecordAPDUBuilder.() -> Unit): ResponseAPDU = transmit {
+    updateRecord(init)
+}

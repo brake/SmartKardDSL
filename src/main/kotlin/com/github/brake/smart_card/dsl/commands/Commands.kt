@@ -18,15 +18,9 @@
 
 package com.github.brake.smart_card.dsl.commands
 
-import com.github.brake.smart_card.dsl.CommandAPDUBuilder
 import com.github.brake.smart_card.dsl.ConvertibleToBytes
 import com.github.brake.smart_card.dsl.toBytes
 import javax.smartcardio.CommandAPDU
-
-@Suppress("PropertyName")
-interface CommandNameHolder {
-    val CMD: String
-}
 
 /**
  * SELECT APDU (INS=A4)
@@ -95,4 +89,3 @@ class SelectAPDUBuilder: CommandAPDUBuilder() {
 
 inline fun select(init: SelectAPDUBuilder.() -> Unit): CommandAPDU = SelectAPDUBuilder().apply(init).build()
 
-val SELECT = ::select

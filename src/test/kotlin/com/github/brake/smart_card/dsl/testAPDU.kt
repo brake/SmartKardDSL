@@ -16,6 +16,8 @@
 
 package com.github.brake.smart_card.dsl
 
+import com.github.brake.smart_card.dsl.commands.CommandAPDUBuilder
+import com.github.brake.smart_card.dsl.commands.apdu
 import io.kotlintest.matchers.string.contain
 import io.kotlintest.should
 import io.kotlintest.shouldBe
@@ -77,20 +79,6 @@ class TestCorrectCreation: StringSpec({
             responseLength { respLen }
         } shouldBe CommandAPDU("A0A401C404B1B2B3B40A".hexToBytesOrNull())
     }
-
-    "Create partial APDU a then complete and finalize" {
-        val (c, i, p1v, p2v) = apduInts
-
-        val partialCommandAPDU = partialAPDU {
-            ins { i }
-            p1 { p1v }
-            p2 { p2v }
-        }
-        apdu(partialCommandAPDU) {
-            cla { c }
-            data { apduBytes.sliceArray(5 until apduInts.size) }
-        } shouldBe apduValue
-    }
 })
 
 const val LESSER_MESSAGE = "should be lesser than"
@@ -147,23 +135,3 @@ class TestIncorrectCreation: StringSpec({
     }
 })
 
-class TestPartialAPDU: StringSpec({
-    val apduInts = intArrayOf(0xA0, 0xA4, 0x1, 0xC4, 0x4, 0xB1, 0xB2, 0xB3, 0xB4)
-    val apduBytes = apduInts.map { it.toByte() }.toByteArray()
-
-    "toString no data" {
-        val (_, i, p1v, p2v) = apduInts
-
-        partialAPDU {
-            ins { i }
-            p1 { p1v }
-            p2 { p2v }
-        }.toString() shouldBe "PartialCommandAPDU(cla=00,ins=A4,p1=01,p2=C4,nr=??,data=??)"
-    }
-
-    "toString with data" {
-        partialAPDU {
-            data { apduBytes.sliceArray(5 until apduBytes.size) }
-        }.toString() shouldBe "PartialCommandAPDU(cla=00,ins=??,p1=00,p2=00,nr=??,data=B1B2B3B4)"
-    }
-})

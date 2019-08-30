@@ -16,6 +16,8 @@
 
 package com.github.brake.smart_card.dsl
 
+import com.github.brake.smart_card.dsl.commands.apdu
+
 /** Just an abstract example of Reader module usage */
 fun test() {
     readers().let {

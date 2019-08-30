@@ -53,7 +53,7 @@ class TestReadBinary : TestBinaryCommand() {
 
             "fail with offset greater than $MAX_OFFSET" {
                 shouldThrow<IllegalArgumentException> {
-                    READ_BINARY {
+                    readBinary {
                         offset(unacceptableOffset)
                     }
                 }
@@ -61,7 +61,7 @@ class TestReadBinary : TestBinaryCommand() {
 
             "fail with offset lesser than $MIN_OFFSET" {
                 shouldThrow<IllegalArgumentException> {
-                    READ_BINARY {
+                    readBinary {
                         offset(-1)
                     }
                 }
@@ -82,7 +82,7 @@ class TestReadBinary : TestBinaryCommand() {
 
             "fail with exception when function return value greater than $MAX_OFFSET" {
                 shouldThrow<IllegalArgumentException> {
-                    READ_BINARY {
+                    readBinary {
                         offset { unacceptableOffset }
                     }
                 }
@@ -90,7 +90,7 @@ class TestReadBinary : TestBinaryCommand() {
 
             "fail with exception when function return value lesser than $MIN_OFFSET" {
                 shouldThrow<IllegalArgumentException> {
-                    READ_BINARY {
+                    readBinary {
                         offset { -1 }
                     }
                 }
@@ -102,7 +102,7 @@ class TestReadBinary : TestBinaryCommand() {
 
         "'numBytes' method with `() -> Int` function" should {
             "work with correct Int value" {
-                READ_BINARY {
+                readBinary {
                     numBytes { num }
                 }.apply {
                     p1 shouldBe 0
@@ -131,7 +131,7 @@ class TestReadBinary : TestBinaryCommand() {
 
         "'numBytes' method with `Int` value" should {
             "work with correct Int value" {
-                READ_BINARY {
+                readBinary {
                     numBytes(num)
                 }.apply {
                     p1 shouldBe 0
@@ -162,7 +162,7 @@ class TestReadBinary : TestBinaryCommand() {
 
         "'readMaxBytes' method" should {
             "Produce `CommandAPDU` with `re` property set to zero" {
-                READ_BINARY {
+                readBinary {
                     readMaxBytes()
                 }.apply {
                     ne shouldBe 0
@@ -189,7 +189,7 @@ class TestUpdateBinary : TestBinaryCommand() {
 
             "fail when `Int` value is greater than $MAX_OFFSET" {
                 shouldThrow<IllegalArgumentException> {
-                    UPDATE_BINARY {
+                    updateBinary {
                         offset(unacceptableOffset)
                     }
                 }
@@ -218,7 +218,7 @@ class TestUpdateBinary : TestBinaryCommand() {
 
             "fail with exception when function return value greater than $MAX_OFFSET" {
                 shouldThrow<IllegalArgumentException> {
-                    UPDATE_BINARY {
+                    updateBinary {
                         offset { unacceptableOffset }
                     }
                 }
@@ -226,7 +226,7 @@ class TestUpdateBinary : TestBinaryCommand() {
 
             "fail with exception when function return value lesser than $MIN_OFFSET" {
                 shouldThrow<IllegalArgumentException> {
-                    READ_BINARY {
+                    updateBinary {
                         offset { -1 }
                     }
                 }

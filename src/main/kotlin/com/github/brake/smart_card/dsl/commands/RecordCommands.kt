@@ -16,7 +16,6 @@
 
 package com.github.brake.smart_card.dsl.commands
 
-import com.github.brake.smart_card.dsl.CommandAPDUBuilder
 import javax.smartcardio.CommandAPDU
 
 /** Constants to be shared between builders of record (LF, CY) based commands */
@@ -72,8 +71,6 @@ class ReadRecordAPDUBuilder : CommandAPDUBuilder() {
 
 inline fun readRecord(init: ReadRecordAPDUBuilder.() -> Unit): CommandAPDU = ReadRecordAPDUBuilder().apply(init).build()
 
-val READ_RECORD = ::readRecord
-
 /**
  * UPDATE RECORD (INS=DC)
  * Write bytes to specified record of Linear Fixed (LF) file
@@ -121,6 +118,4 @@ class UpdateRecordAPDUBuilder : CommandAPDUBuilder() {
 
 inline fun updateRecord(init: UpdateRecordAPDUBuilder.() -> Unit): CommandAPDU =
     UpdateRecordAPDUBuilder().apply(init).build()
-
-val UPDATE_RECORD = ::updateRecord
 

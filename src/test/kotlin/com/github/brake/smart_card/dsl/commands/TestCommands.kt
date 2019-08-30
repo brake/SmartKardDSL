@@ -26,7 +26,7 @@ class TestSelect : StringSpec({
 
     "'file' method with `ConvertibleToBytes`" {
 
-        SELECT {
+        select {
             file(MF.EF_ICCID)
         }.apply {
             ins shouldBe Instructions.Select
@@ -62,7 +62,7 @@ class TestSelect : StringSpec({
     }
 
     "'file' method with `() -> ByteArray` initialization function" {
-        SELECT {
+        select {
             file { 0x2FE2.toShortBytes() }
         }.apply {
             ins shouldBe Instructions.Select
@@ -71,7 +71,7 @@ class TestSelect : StringSpec({
     }
 
     "'requestFCP' method" {
-        SELECT {
+        select {
             requestFCP()
         }.apply {
             ins shouldBe Instructions.Select

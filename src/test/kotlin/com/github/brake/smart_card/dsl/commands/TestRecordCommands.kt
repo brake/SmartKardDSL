@@ -31,7 +31,7 @@ class TestReadRecord : TestRecordCommand() {
     init {
 
         "'recordNumber' method with `Int` value" {
-            READ_RECORD {
+            readRecord {
                 recordNumber(validRecordNumber)
             }.apply {
                 p1 shouldBe validRecordNumber
@@ -64,13 +64,13 @@ class TestReadRecord : TestRecordCommand() {
             }
 
             shouldThrow<IllegalArgumentException> {
-                READ_RECORD {
+                readRecord {
                     recordNumber { incorrectRecordNumber }
                 }
             }
 
             shouldThrow<IllegalArgumentException> {
-                READ_RECORD {
+                readRecord {
                     recordNumber { -1 }
                 }
             }
@@ -93,7 +93,7 @@ class TestUpdateRecord : TestRecordCommand() {
     init {
 
         "'recordNumber' method with `Int` value" {
-            UPDATE_RECORD {
+            updateRecord {
                 recordNumber(validRecordNumber)
             }.apply {
                 p1 shouldBe validRecordNumber
@@ -103,13 +103,13 @@ class TestUpdateRecord : TestRecordCommand() {
             }
 
             shouldThrow<IllegalArgumentException> {
-                readRecord {
+                updateRecord {
                     recordNumber(incorrectRecordNumber)
                 }
             }
 
             shouldThrow<IllegalArgumentException> {
-                readRecord {
+                updateRecord {
                     recordNumber(-1)
                 }
             }
@@ -126,13 +126,13 @@ class TestUpdateRecord : TestRecordCommand() {
             }
 
             shouldThrow<IllegalArgumentException> {
-                READ_RECORD {
+                updateRecord {
                     recordNumber { incorrectRecordNumber }
                 }
             }
 
             shouldThrow<IllegalArgumentException> {
-                READ_RECORD {
+                updateRecord {
                     recordNumber { -1 }
                 }
             }

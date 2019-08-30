@@ -14,11 +14,8 @@
  *    limitations under the License.
  */
 
-@file:Suppress("FunctionName")
-
 package com.github.brake.smart_card.dsl.commands
 
-import com.github.brake.smart_card.dsl.CommandAPDUBuilder
 import com.github.brake.smart_card.dsl.toHiLo
 import javax.smartcardio.CommandAPDU
 
@@ -105,9 +102,6 @@ class ReadBinaryAPDUBuilder : CommandAPDUBuilder() {
 
 inline fun readBinary(init: ReadBinaryAPDUBuilder.() -> Unit): CommandAPDU = ReadBinaryAPDUBuilder().apply(init).build()
 
-inline fun READ_BINARY(init: ReadBinaryAPDUBuilder.() -> Unit): CommandAPDU =
-    readBinary(init)
-
 /**
  * UPDATE BINARY (INS=D6)
  * Write bytes to transparent file (TR). Can write by chunks with size of 255 bytes.
@@ -148,4 +142,3 @@ class UpdateBinaryAPDUBuilder : CommandAPDUBuilder() {
 inline fun updateBinary(init: UpdateBinaryAPDUBuilder.() -> Unit): CommandAPDU =
     UpdateBinaryAPDUBuilder().apply(init).build()
 
-val UPDATE_BINARY = ::updateBinary

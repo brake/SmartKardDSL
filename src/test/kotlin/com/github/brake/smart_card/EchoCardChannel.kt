@@ -31,7 +31,7 @@ class EchoCardChannel(private val _card: Card, private val sw1: Int, private val
         val length = commandBytes.size + 2
         val response = ByteArray(length) {
             when(it) {
-                in 0 until commandBytes.size -> commandBytes[it]
+                in commandBytes.indices -> commandBytes[it]
                 length - 2 -> sw1.toByte()
                 length - 1 -> sw2.toByte()
                 else -> throw IllegalArgumentException("Invalid position in EchoCardChannel.transmit()")

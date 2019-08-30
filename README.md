@@ -20,12 +20,12 @@ This version is an early prototype of DSL.
 
 ##### Groovy DSL
 ```groovy
-implementation 'com.github.brake.smart_card:smartKardDSL:0.0.1'
+implementation 'com.github.brake.smart_card:smartKardDSL:0.1.0'
 ```
 
 ##### Kotlin DSL
 ```kotlin
-implementation("com.github.brake.smart_card:smartKardDSL:0.0.1")
+implementation("com.github.brake.smart_card:smartKardDSL:0.1.0")
 ```
 
 #### Maven
@@ -51,42 +51,32 @@ fun test() {
             if (waitForCardPresent(1000)) {
                 try {
                     connectAuto { // CardChannel
-                        transmit {
-                            apdu {
-                                ins { Instructions.Select }
-                                p1 { 0 }
-                                p2 { 0 }
-                                dataHex { "3F00" }
-                            }
+                        APDU {  // creates APDU and transmits it immediately returning ResponseAPDU
+                            ins { Instructions.Select }
+                            p1 { 0 }
+                            p2 { 0 }
+                            dataHex { "3F00" }
                         }.assert("Invalid SW") {
                             sw1 == 0x9F
                         }
                         
-                        transmit {
+                        SELECT {
+                            file(MF.EF_DIR)
+                            requestFCP()    
+                        }.withResult {
+                        // analyze FCP template and retrieve record length and number of records
+                        }
+                        
+                        READ_RECORD {
+                            recordNum(1)
+                        }.withResult {  // ResponseAPDU
+                            // read AID
+                            val aid = data // really a part of data
                             SELECT {
-                                file(MF.EF_DIR)    
+                                application(aid)
                             }
                         }
-                        
-                        transmit {
-                            GET_RESPONSE
-                        }
-                        // analyze File Control Parameters
-                        
-                        transmit {
-                            READ_RECORD {
-                                recordNum(1)
-                            }.withResult {  // ResponseAPDU
-                                // read AID
-                                val aid = data // really a part of data
-                                transmit {
-                                    SELECT {
-                                        application(aid)
-                                    }
-                                }
-                            }
-                        }
-                        
+                    
                         // continue in context of selected applications' DF
                     }
                 } catch (e: Exception) {
@@ -106,7 +96,7 @@ fun test() {
 - [ ] convenience method `Card.iccid` returning card's [ICCID](https://en.wikipedia.org/wiki/SIM_card#ICCID) 
 - [ ] add more known files to enums
 - [ ] add `assertSW` methods to `ResponseAPDU` to control contents of the error message when `SW` doesn't equal with expected value or not in a list of expected values
-- [ ] add version of `CardChannel.transmit` which able to receive a sequence of `APDU` to be transmitted one by one with optional configurable error check for each `APDU`
-- [ ] or reduce the number of curly braces on `transmit` by moving `apdu` and subclasses in context of `CardChannel` to be able to hide the call of `transmit` under the hoodt
+- [ ] ~~add version of `CardChannel.transmit` which able to receive a sequence of `APDU` to be transmitted one by one with optional configurable error check for each `APDU`~~
+- [X] ~~or~~ reduce the number of curly braces on `transmit` by moving `apdu` and subclasses in context of `CardChannel` to be able to hide the call of `transmit` under the hood
 - [X] remove `GET RESPONSE` command because it doesn't make sense - JRE detects APDU where `GET RESPONSE` is required and issues this command under the hood
 - [ ] add simple setter methods without of lambdas to `CommandAPDUBuilder`
