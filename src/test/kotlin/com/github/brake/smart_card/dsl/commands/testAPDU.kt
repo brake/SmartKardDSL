@@ -14,10 +14,10 @@
  *    limitations under the License.
  */
 
-package com.github.brake.smart_card.dsl
+package com.github.brake.smart_card.dsl.commands
 
-import com.github.brake.smart_card.dsl.commands.CommandAPDUBuilder
-import com.github.brake.smart_card.dsl.commands.apdu
+import com.github.brake.smart_card.dsl.hexToBytesOrNull
+import com.github.brake.smart_card.dsl.toHexString
 import io.kotlintest.matchers.string.contain
 import io.kotlintest.should
 import io.kotlintest.shouldBe
@@ -104,25 +104,25 @@ class TestIncorrectCreation: StringSpec({
 
     "Invalid INS" {
         testWithBigValue { ins { 500 } }
-        testWithBigValue { insHex {"AAA"} }
+        testWithBigValue { insHex { "AAA" } }
         testWithInvalidHexValue { insHex { "RR" } }
     }
 
     "Invalid CLA" {
         testWithBigValue { cla { 500 } }
-        testWithBigValue { claHex {"AAA"} }
+        testWithBigValue { claHex { "AAA" } }
         testWithInvalidHexValue { claHex { "RR" } }
     }
 
     "Invalid P1" {
         testWithBigValue { p1 { 500 } }
-        testWithBigValue { p1Hex {"AAA"} }
+        testWithBigValue { p1Hex { "AAA" } }
         testWithInvalidHexValue { p1Hex { "RR" } }
     }
 
     "Invalid P2" {
         testWithBigValue { p2 { 500 } }
-        testWithBigValue { p2Hex {"AAA"} }
+        testWithBigValue { p2Hex { "AAA" } }
         testWithInvalidHexValue { p2Hex { "RR" } }
     }
 
