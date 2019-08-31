@@ -52,6 +52,7 @@ tasks {
     }
 
     dokka {
+        jdkVersion = 8
         outputFormat = "html"
         outputDirectory = "$buildDir/dokka"
         doFirst {
