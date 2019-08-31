@@ -34,7 +34,7 @@ implementation("com.github.brake.smart_card:smartKardDSL:0.1.0")
 <dependency>
   <groupId>com.github.brake.smart_card</groupId>
   <artifactId>smartKardDSL</artifactId>
-  <version>0.0.1</version>
+  <version>0.1.0</version>
 </dependency>
 ```
 
