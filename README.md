@@ -115,13 +115,4 @@ fun test() {
 
 ### TODO
 
-- [ ] functions for transparent files which able to read/write full contents of the file at once, not 255 bytes chunks as `READ BINARY` and `WRITE BINARY` are doing
-- [ ] function for record based files which able to (optionally lazily) read all the records of this file and represent them as sequence of byte buffers, like `useLines()` function 
-- [ ] convenience method `Card.iccid` returning card's [ICCID](https://en.wikipedia.org/wiki/SIM_card#ICCID) 
-- [ ] add more known files to enums
-- [ ] add `assertSW` methods to `ResponseAPDU` to control contents of the error message when `SW` doesn't equal with expected value or not in a list of expected values
-- [ ] add simple setter methods without of lambdas to `CommandAPDUBuilder`
-- [ ] add to CardChannel method (construction) which able to run given lambda in context of `this` and, finally, disconnect from or close this channel (close isn't allowed for the BasicChannel) 
-- [ ] ~~add version of `CardChannel.transmit` which able to receive a sequence of `APDU` to be transmitted one by one with optional configurable error check for each `APDU`~~
-- [X] ~~or~~ reduce the number of curly braces on `transmit` by moving `apdu` and subclasses in context of `CardChannel` to be able to hide the call of `transmit` under the hood
-- [X] remove `GET RESPONSE` command because it doesn't make sense - JRE detects APDU where `GET RESPONSE` is required and issues this command under the hood
+See [here](https://github.com/brake/SmartKardDSL/labels/enhancement)
