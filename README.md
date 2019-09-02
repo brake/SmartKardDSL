@@ -10,9 +10,33 @@ This version is an early prototype of DSL.
 
 ## Table of Contents
 
+* [Introduction](#introduction)
 * [Dependency Configuration](#dependency-configuration)
 * [Examples](#examples)
 * [TODO](#todo)
+
+## Introduction
+
+### Purpose of the DSL
+
+#### <span style="color:green">What you can do</span>
+
+Manipulate with [SmartCard](https://en.wikipedia.org/wiki/Smart_card) contents, i.e.:
+
+1. _Read_/write _from_/to files on the card
+1. Get information about files and directories on a card
+1. Create/delete/activate/deactivate files or directories on the card
+1. Verify PIN and another security codes
+1. Call [Global Platform](https://globalplatform.org) commands
+1. Call application specific commands (i.e. GSM application, USIM application, etc.)
+1. Anything else if there is specific APDU for that
+
+**<span style="color:white;background-color:red">Note that you'll have to obtain special permissions from the card issuer to perform several or all of the actions listed above!</span>**
+
+#### <span style="color:red">What you can't do</span>
+
+1. Develop [JavaCard](https://en.wikipedia.org/wiki/Java_Card) applications (AKA applets) in Kotlin with this DSL, you still need a JavaCard SDK for that
+1. Call APDUs which are not allowed by a card issuer
 
 ## Dependency Configuration
 
@@ -96,7 +120,8 @@ fun test() {
 - [ ] convenience method `Card.iccid` returning card's [ICCID](https://en.wikipedia.org/wiki/SIM_card#ICCID) 
 - [ ] add more known files to enums
 - [ ] add `assertSW` methods to `ResponseAPDU` to control contents of the error message when `SW` doesn't equal with expected value or not in a list of expected values
+- [ ] add simple setter methods without of lambdas to `CommandAPDUBuilder`
+- [ ] add to CardChannel method (construction) which able to run given lambda in context of `this` and, finally, disconnect from or close this channel (close isn't allowed for the BasicChannel) 
 - [ ] ~~add version of `CardChannel.transmit` which able to receive a sequence of `APDU` to be transmitted one by one with optional configurable error check for each `APDU`~~
 - [X] ~~or~~ reduce the number of curly braces on `transmit` by moving `apdu` and subclasses in context of `CardChannel` to be able to hide the call of `transmit` under the hood
 - [X] remove `GET RESPONSE` command because it doesn't make sense - JRE detects APDU where `GET RESPONSE` is required and issues this command under the hood
-- [ ] add simple setter methods without of lambdas to `CommandAPDUBuilder`
